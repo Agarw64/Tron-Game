@@ -1,0 +1,53 @@
+module fsm_synth (
+  input  logic CLK50,
+  input  logic reset,      
+  input  logic E,
+  input  logic M,
+  output logic [1:0] PRESENT_STATE,
+  output logic LOCKED,
+  output logic savePW,
+  output logic saveAT
+);
+
+  typedef enum logic [1:0] {
+    OPENSTATE   = 2'b00,
+    OPENHOLD    = 2'b01,
+    LOCKEDSTATE = 2'b10,
+    LOCKEDHOLD  = 2'b11
+  } state_t;
+
+  state_t PRESENT_STATE, NEXT_STATE;
+
+  // outputs (Moore)
+  always_comb begin
+    LOCKED = 1'b0;
+    savePW = 1'b0;
+    saveAT = 1'b0;
+
+    case (PRESENT_STATE)
+      OPENHOLD:    savePW = 1'b1;
+      LOCKEDSTATE: LOCKED = 1'b1;
+      LOCKEDHOLD:  begin LOCKED = 1'b1; saveAT = 1'b1; end
+    endcase
+  end
+
+  // next state
+  always_comb begin
+    NEXT_STATE = PRESENT_STATE;
+
+    case (PRESENT_STATE)
+      OPENSTATE:    if (E)  NEXT_STATE = OPENHOLD;
+      OPENHOLD:     if (!E) NEXT_STATE = LOCKEDSTATE;
+      LOCKEDSTATE:  if (E)  NEXT_STATE = LOCKEDHOLD;
+      LOCKEDHOLD:   if (!E) NEXT_STATE = (M ? OPENSTATE : LOCKEDSTATE);
+    endcase
+  end
+
+ 
+  always_ff @(posedge CLK50) begin
+    if (~reset) PRESENT_STATE <= OPENSTATE;
+    else        PRESENT_STATE <= NEXT_STATE;
+  end
+
+endmodule
+
