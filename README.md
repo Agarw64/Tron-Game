@@ -1,9 +1,15 @@
 # Embedded C Programmming on RISC-V
 
+This lab is done **INDIVIDUALLY**.
+
 ## Getting Started with Hardware
 
-Connect FPGA board to your laptop and a VGA monitor. If you do not have a VGA
-monitor at home, you can use CPUlator to get started (see below).
+The following instructions are adapted from Lab 0 for use with C.
+
+Connect your FPGA board to your laptop and a VGA monitor.  There are VGA
+monitors in the lab with a BLUE connector on the end. If you do not have a VGA
+monitor at home, you can use CPUlator to get started (see below), but to you
+will be marked with things running on your FPGA board.
 
 In Windows, go to **Start** --> **Nios V Command Shell** and run the following commands on your laptop:
 
@@ -79,6 +85,8 @@ paste the entire contents of the file `address_map_niosv.h`.
 cause your program to disappear. Save if locally using the `File --> Save ...` feature.
 Likewise, you can load it back again using `File --> Load...`.
 
+## Lab 9 Requirements
+
 ### Tron Light Cycle Game
 
 Modify vga.c into a C program that plays the Tron light cycle on your FPGA
@@ -125,3 +133,23 @@ creative as you see fit.
 
 It is recommended that you start with one working player (either human or robot),
 then add the second player, then add the score-keeping and display.
+
+
+### Switching between CPUlator (DE1-SoC) and DE10-Lite
+
+If you have a DE1-SoC, or are running in CPUlator, modify the beginning of
+`address_map_niosv.h` so it reads `#define DE10LITE 0`. If you switch from
+CPUlator back to DE10-Lite hardware, be sure to change the 0 back to a 1.
+
+### Deadline
+
+Due to the late release of this lab, you may get it marked at the same time as
+Lab 10. However, it is strongly advised that you attempt to get it done this
+week.
+
+### Submission Requirements
+
+Submit your entire program, as a single C source file. However, please rename
+your source file to end in `.txt` so that Canvas can actually display its contents
+instead of forcing a file download.
+
